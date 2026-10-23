@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SkillBridge AI - Campus Placement Readiness & Skill Gap Analysis{% endblock %}</title>
+  
+  <!-- Favicon / SVG Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366F1'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="{{ url_for('main.index') }}" class="brand-logo" aria-label="SkillBridge AI Home">
+        <div class="brand-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <span>SkillBridge <span class="accent-ai">AI</span></span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="{{ url_for('main.index') }}" class="nav-link">Home</a></li>
+          <li><a href="{{ url_for('main.index', _anchor='about') }}" class="nav-link">About</a></li>
+          <li><a href="{{ url_for('main.index', _anchor='features') }}" class="nav-link">Features</a></li>
+          <li><a href="{{ url_for('main.index', _anchor='contact') }}" class="nav-link">Contact</a></li>
+          
+          {% if session.get('user_id') %}
+            <li><a href="{{ url_for('dashboard.index') }}" class="nav-link">Dashboard</a></li>
+            <li><a href="{{ url_for('roles.index') }}" class="nav-link">Job Roles</a></li>
+            <li><a href="{{ url_for('assessment.index') }}" class="nav-link">Assessments</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+
+      <!-- Auth Actions -->
+      <div class="nav-auth">
+        {% if session.get('user_id') %}
+          <a href="{{ url_for('profile.index') }}" class="btn btn-sm btn-outline-navy">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            {{ session.get('user_name', 'Profile') }}
+          </a>
+          <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-secondary">Logout</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-outline">Login</a>
+          <a href="{{ url_for('auth.signup') }}" class="btn btn-sm btn-primary">Sign Up</a>
+        {% endif %}
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category if category != 'error' else 'danger' }}" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="alert-close" aria-label="Close alert">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Page Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="{{ url_for('main.index') }}" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+            <span>SkillBridge <span class="accent-ai" style="color: #A78BFA;">AI</span></span>
+          </a>
+          <p>An Intelligent Campus Placement Readiness and Skill Gap Analysis System designed for Computer Science Engineering students.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('main.index') }}">Home</a></li>
+            <li><a href="{{ url_for('main.index', _anchor='features') }}">Features</a></li>
+            <li><a href="{{ url_for('main.index', _anchor='about') }}">About System</a></li>
+            <li><a href="{{ url_for('main.index', _anchor='contact') }}">Support & Help</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Modules</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('auth.login') }}">Skill Assessment</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Gap Analysis</a></li>
+            <li><a href="{{ url_for('auth.login') }}">AI Learning Plans</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Job Role Profiles</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Academic Project</h4>
+          <ul class="footer-links">
+            <li style="color: #94A3B8; font-size: 0.9rem;">Department of Computer Science & Engineering</li>
+            <li style="color: #94A3B8; font-size: 0.9rem;">Placement Readiness Mission</li>
+            <li style="color: #94A3B8; font-size: 0.9rem;">Tech: Python, Flask, SQLite, AI</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; {{ current_year }} SkillBridge AI. Built for Academic Demonstration & Portfolio.</p>
+        <p>Empowering Engineers through Intelligent Placement Diagnostics</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
+

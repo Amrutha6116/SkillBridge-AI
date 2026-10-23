@@ -1,0 +1,112 @@
+{% extends "portal_base.html" %}
+
+{% block title %}{{ role.title }} - Skill Comparison - SkillBridge AI{% endblock %}
+
+{% block portal_content %}
+<div style="margin-bottom: 1.5rem;">
+  <a href="{{ url_for('roles.index') }}" style="font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
+    &larr; Back to Job Roles Catalogue
+  </a>
+</div>
+
+<div class="card" style="margin-bottom: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+    <div>
+      <span class="badge badge-indigo" style="margin-bottom: 0.5rem;">{{ role.category }}</span>
+      <h1 style="font-size: 2rem; color: var(--color-primary-navy);">{{ role.title }}</h1>
+      <p class="text-muted" style="margin-top: 0.25rem;">
+        Experience: <strong>{{ role.min_experience }}</strong> &bull; Package Range: <strong>{{ role.avg_package }}</strong>
+      </p>
+    </div>
+    
+    <div style="text-align: right;">
+      <span class="badge {% if role.demand_level == 'Very High' %}badge-success{% else %}badge-lavender{% endif %}">
+        {{ role.demand_level }} Campus Demand
+      </span>
+      {% if has_assessed %}
+        <div style="margin-top: 0.5rem; font-size: 1.25rem; font-weight: 800; color: {% if overall_readiness >= 75 %}var(--color-success-green){% elif overall_readiness >= 50 %}var(--color-electric-indigo){% else %}var(--color-slate-muted){% endif %};">
+          {{ overall_readiness }}% Match
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <p style="font-size: 1.05rem; line-height: 1.7; color: var(--color-slate-dark); margin-bottom: 1.5rem;">
+    {{ role.description }}
+  </p>
+
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <a href="{{ url_for('assessment.index') }}" class="btn btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+      Assess Knowledge for {{ role.title }}
+    </a>
+    <a href="{{ url_for('improvement.index') }}" class="btn btn-outline-navy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      Generate AI Plan for this Role
+    </a>
+  </div>
+</div>
+
+<!-- Detailed Skill Gap Comparison Section -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h2 style="font-size: 1.35rem; color: var(--color-primary-navy);">
+        Benchmark Skill Comparison & Gap Breakdown
+      </h2>
+      <p class="text-muted" style="font-size: 0.875rem;">
+        Comparing your measured proficiency (Level 1–5) against the target hiring threshold.
+      </p>
+    </div>
+  </div>
+
+  {% if not has_assessed %}
+    <div style="background-color: #FEF3C7; border: 1px solid #FCD34D; border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+      <div style="color: #92400E; font-size: 0.9rem;">
+        <strong>Notice:</strong> You haven't completed a diagnostic evaluation yet. Your current levels below are unassessed.
+      </div>
+      <a href="{{ url_for('assessment.index') }}" class="btn btn-sm btn-primary">Start Diagnostic Test</a>
+    </div>
+  {% endif %}
+
+  <div class="comparison-list">
+    {% for item in comparisons %}
+      <div class="comparison-item">
+        <div class="comparison-header">
+          <div>
+            <span style="font-size: 1.05rem; color: var(--color-primary-navy);">{{ item.skill_name }}</span>
+            <span class="badge badge-lavender" style="margin-left: 0.5rem; font-size: 0.7rem;">{{ item.skill_category }}</span>
+          </div>
+          <div>
+            {% if not has_assessed %}
+              <span class="badge badge-lavender">Unassessed</span>
+            {% elif item.gap == 0 %}
+              <span class="badge badge-success">&#10003; Benchmark Satisfied</span>
+            {% else %}
+              <span class="badge badge-danger">Skill Gap: &minus;{{ item.gap }} Level</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--color-slate-muted); margin-bottom: 0.5rem;">
+          <span>Your Measured Level: <strong>{{ item.student_level if has_assessed else "Not Assessed" }} / 5.0</strong></span>
+          <span>Required Benchmark: <strong>{{ item.required_level }} / 5.0</strong></span>
+        </div>
+
+        <!-- Dual Progress Bar: Student Level vs Required Level -->
+        <div class="progress-track" style="height: 12px; position: relative;">
+          <!-- Student Level Fill -->
+          <div class="progress-fill {% if item.student_level >= item.required_level %}fill-green{% else %}fill-indigo{% endif %}"
+               style="width: {{ (item.student_level / 5.0) * 100 if has_assessed else 0 }}%;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.775rem; color: var(--color-slate-light); margin-top: 0.35rem;">
+          <span>Proficiency Match: <strong>{{ item.match_pct if has_assessed else 0 }}%</strong></span>
+          <span>Scale: Novice (1.0) &rarr; Expert (5.0)</span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

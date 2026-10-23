@@ -1,0 +1,213 @@
+{% extends "portal_base.html" %}
+
+{% block title %}Student Dashboard - SkillBridge AI{% endblock %}
+
+{% block portal_content %}
+<!-- Dashboard Welcome Header -->
+<div class="portal-header">
+  <div class="portal-welcome">
+    <span class="badge badge-indigo" style="margin-bottom: 0.5rem;">Academic Session 2026–2027</span>
+    <h1>Welcome back, {{ user.full_name }}!</h1>
+    <p>
+      {{ user.course }} &bull; Batch of {{ user.graduation_year }} &bull; USN: <code>{{ user.register_number }}</code>
+    </p>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem;">
+    <a href="{{ url_for('assessment.index') }}" class="btn btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <span>Take New Assessment</span>
+    </a>
+  </div>
+</div>
+
+<!-- Screen 4: 4 Summary Metric Cards (Real DB Values) -->
+<div class="metrics-grid">
+  <!-- Card 1: Assessments Taken -->
+  <div class="metric-card">
+    <div class="metric-icon-box icon-box-indigo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+    </div>
+    <div class="metric-data">
+      <span>Assessments Taken</span>
+      <h2>{{ assessments_count }}</h2>
+      <p>{{ "Avg Score: " ~ avg_score ~ "%" if assessments_count > 0 else "No attempts yet" }}</p>
+    </div>
+  </div>
+
+  <!-- Card 2: Skill Gaps Identified -->
+  <div class="metric-card">
+    <div class="metric-icon-box icon-box-amber">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
+    </div>
+    <div class="metric-data">
+      <span>Skill Gaps Identified</span>
+      <h2 style="color: var(--color-warning-amber);">{{ skill_gaps_count }}</h2>
+      <p>{{ "From latest diagnostic test" if assessments_count > 0 else "Take test to identify" }}</p>
+    </div>
+  </div>
+
+  <!-- Card 3: Improvement Suggestions -->
+  <div class="metric-card">
+    <div class="metric-icon-box icon-box-navy">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+    </div>
+    <div class="metric-data">
+      <span>Improvement Tasks</span>
+      <h2>{{ improvement_tasks_count }}</h2>
+      <p>{{ "Active action items" if improvement_tasks_count > 0 else "Ready for new plan" }}</p>
+    </div>
+  </div>
+
+  <!-- Card 4: Job Roles Explored -->
+  <div class="metric-card">
+    <div class="metric-icon-box icon-box-green">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+      </svg>
+    </div>
+    <div class="metric-data">
+      <span>Job Roles Available</span>
+      <h2 style="color: var(--color-success-green);">{{ total_roles_count }}</h2>
+      <p>Benchmark profiles mapped</p>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 4: Career Journey Section -->
+<div class="journey-card">
+  <div class="journey-header">
+    <div>
+      <h3>Campus Placement Journey</h3>
+      <p class="text-muted" style="font-size: 0.875rem;">Your step-by-step pathway from college curriculum to tier-1 recruitment readiness.</p>
+    </div>
+    <span class="badge {% if 'Tier 1' in readiness_status %}badge-success{% elif 'Competent' in readiness_status %}badge-indigo{% else %}badge-lavender{% endif %}">
+      Status: {{ readiness_status }}
+    </span>
+  </div>
+
+  <div class="journey-steps">
+    <!-- Step 1 -->
+    <div class="journey-step {{ journey.step1 }}">
+      <div class="step-num">
+        {% if journey.step1 == 'completed' %}&#10003;{% else %}1{% endif %}
+      </div>
+      <h4>Diagnostic Assessment</h4>
+      <p>Measure foundational CS & web development knowledge.</p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="journey-step {{ journey.step2 }}">
+      <div class="step-num">
+        {% if journey.step2 == 'completed' %}&#10003;{% else %}2{% endif %}
+      </div>
+      <h4>Skill Gap Discovery</h4>
+      <p>Compare against company hiring benchmarks.</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="journey-step {{ journey.step3 }}">
+      <div class="step-num">
+        {% if journey.step3 == 'completed' %}&#10003;{% else %}3{% endif %}
+      </div>
+      <h4>Targeted AI Plan</h4>
+      <p>Execute milestone-based learning deliverables.</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="journey-step {{ journey.step4 }}">
+      <div class="step-num">
+        {% if journey.step4 == 'completed' %}&#10003;{% else %}4{% endif %}
+      </div>
+      <h4>Placement Ready</h4>
+      <p>Interview-grade proficiency and confidence.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 4: Recent Assessment Activity Table -->
+<div class="table-card">
+  <div class="table-header">
+    <h3>Recent Assessment Activity</h3>
+    {% if recent_attempts %}
+      <a href="{{ url_for('history.index') }}" style="font-size: 0.875rem; font-weight: 600;">View All History &rarr;</a>
+    {% endif %}
+  </div>
+
+  {% if recent_attempts %}
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Assessment Category / Target Role</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for attempt in recent_attempts %}
+            <tr>
+              <td>{{ attempt.completed_at.strftime('%b %d, %Y - %I:%M %p') if attempt.completed_at else 'In Progress' }}</td>
+              <td>
+                <strong>{{ attempt.category }}</strong>
+                {% if attempt.target_role %}
+                  <span class="text-muted" style="font-size: 0.8rem; display: block;">Target: {{ attempt.target_role.title }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <strong>{{ attempt.total_score }} / {{ attempt.max_score }}</strong>
+              </td>
+              <td>
+                <span class="score-badge {% if attempt.percentage >= 75 %}score-high{% elif attempt.percentage >= 50 %}score-mid{% else %}score-low{% endif %}">
+                  {{ attempt.percentage }}%
+                </span>
+              </td>
+              <td>
+                <span class="badge badge-success">Completed</span>
+              </td>
+              <td>
+                <a href="{{ url_for('assessment.results', attempt_id=attempt.id) }}" class="btn btn-sm btn-outline">
+                  View Results & Gaps
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h4>No Assessments Taken Yet</h4>
+      <p>
+        Take your first technical placement evaluation to reveal your current proficiencies, uncover skill gaps, and generate your customized AI learning roadmap.
+      </p>
+      <a href="{{ url_for('assessment.index') }}" class="btn btn-primary">
+        Start Diagnostic Evaluation
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

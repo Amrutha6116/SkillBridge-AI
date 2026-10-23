@@ -1,0 +1,117 @@
+{% extends "portal_base.html" %}
+
+{% block title %}Assessment History - SkillBridge AI{% endblock %}
+
+{% block portal_content %}
+<div class="portal-header">
+  <div class="portal-welcome">
+    <span class="badge badge-indigo" style="margin-bottom: 0.5rem;">Academic Log</span>
+    <h1>Assessment History</h1>
+    <p>Chronological record of all diagnostic technical assessments and placement benchmark evaluations.</p>
+  </div>
+
+  <div>
+    <a href="{{ url_for('assessment.index') }}" class="btn btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+      <span>Take New Assessment</span>
+    </a>
+  </div>
+</div>
+
+<!-- History Stats Highlights -->
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+  <div class="card" style="padding: 1.25rem 1.5rem;">
+    <span style="font-size: 0.8rem; color: var(--color-slate-muted); font-weight: 700; text-transform: uppercase;">Total Evaluations</span>
+    <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-primary-navy);">{{ total_tests }}</div>
+  </div>
+
+  <div class="card" style="padding: 1.25rem 1.5rem;">
+    <span style="font-size: 0.8rem; color: var(--color-slate-muted); font-weight: 700; text-transform: uppercase;">Highest Score</span>
+    <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-success-green);">{{ highest_score }}%</div>
+  </div>
+
+  <div class="card" style="padding: 1.25rem 1.5rem;">
+    <span style="font-size: 0.8rem; color: var(--color-slate-muted); font-weight: 700; text-transform: uppercase;">Average Readiness</span>
+    <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-electric-indigo);">{{ avg_score }}%</div>
+  </div>
+</div>
+
+<!-- History Table Card -->
+<div class="table-card">
+  <div class="table-header">
+    <h3>Diagnostic Evaluation Attempts</h3>
+    <span class="badge badge-lavender">{{ attempts|length }} Records</span>
+  </div>
+
+  {% if attempts %}
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Category / Target Job Role</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for attempt in attempts %}
+            <tr>
+              <td>
+                {{ attempt.completed_at.strftime('%B %d, %Y - %I:%M %p') if attempt.completed_at else attempt.started_at.strftime('%B %d, %Y - %I:%M %p') }}
+              </td>
+              <td>
+                <strong style="color: var(--color-primary-navy);">{{ attempt.category }}</strong>
+                {% if attempt.target_role %}
+                  <span class="text-muted" style="font-size: 0.8rem; display: block;">Target: {{ attempt.target_role.title }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <strong>{{ attempt.total_score }} / {{ attempt.max_score }}</strong>
+              </td>
+              <td>
+                <span class="score-badge {% if attempt.percentage >= 75 %}score-high{% elif attempt.percentage >= 50 %}score-mid{% else %}score-low{% endif %}">
+                  {{ attempt.percentage }}%
+                </span>
+              </td>
+              <td>
+                {% if attempt.status == 'completed' %}
+                  <span class="badge badge-success">Completed</span>
+                {% else %}
+                  <span class="badge badge-warning">In Progress</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if attempt.status == 'completed' %}
+                  <a href="{{ url_for('assessment.results', attempt_id=attempt.id) }}" class="btn btn-sm btn-outline">
+                    View Analysis &rarr;
+                  </a>
+                {% else %}
+                  <a href="{{ url_for('assessment.take', attempt_id=attempt.id) }}" class="btn btn-sm btn-primary">
+                    Resume &rarr;
+                  </a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 14 14"></polyline>
+        </svg>
+      </div>
+      <h4>No Past Assessments Found</h4>
+      <p>You have not recorded any diagnostic test sessions yet. Start your initial evaluation to begin tracking your placement progress.</p>
+      <a href="{{ url_for('assessment.index') }}" class="btn btn-primary">Start First Evaluation</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+

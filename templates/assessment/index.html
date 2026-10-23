@@ -1,0 +1,114 @@
+{% extends "portal_base.html" %}
+
+{% block title %}Assessment Hub - SkillBridge AI{% endblock %}
+
+{% block portal_content %}
+<div class="portal-header">
+  <div class="portal-welcome">
+    <span class="badge badge-indigo" style="margin-bottom: 0.5rem;">Diagnostic Center</span>
+    <h1>Skill Assessments</h1>
+    <p>Select an evaluation mode to diagnose strengths, identify skill deficits, and generate learning roadmaps.</p>
+  </div>
+</div>
+
+<!-- Primary Assessment Options Grid -->
+<div class="assessment-hub-grid">
+  <!-- Option 1: Comprehensive Diagnostic -->
+  <div class="hub-card" style="border-top: 4px solid var(--color-electric-indigo);">
+    <div class="hub-card-icon" style="background-color: #EEF2FF; color: var(--color-electric-indigo);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+    </div>
+    <span class="badge badge-indigo" style="width: fit-content; margin-bottom: 0.75rem;">Recommended</span>
+    <h3 style="font-size: 1.3rem; color: var(--color-primary-navy); margin-bottom: 0.5rem;">Comprehensive Diagnostic</h3>
+    <p class="text-muted" style="font-size: 0.925rem; margin-bottom: 1.5rem; flex: 1;">
+      A full-spectrum placement test assessing Web Development, Core CS (DSA, SQL, OS/Networks), and Quantitative Aptitude.
+    </p>
+
+    <div style="font-size: 0.825rem; color: var(--color-slate-muted); margin-bottom: 1.25rem;">
+      &bull; <strong>{{ total_questions }} Total Questions</strong> &bull; Server Scored
+    </div>
+
+    <form action="{{ url_for('assessment.start') }}" method="POST">
+      <input type="hidden" name="assessment_type" value="Comprehensive Diagnostic">
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        Start Full Diagnostic
+      </button>
+    </form>
+  </div>
+
+  <!-- Option 2: Web Development Diagnostic -->
+  <div class="hub-card" style="border-top: 4px solid var(--color-soft-lavender);">
+    <div class="hub-card-icon" style="background-color: #F5F3FF; color: #7C3AED;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+    </div>
+    <span class="badge badge-lavender" style="width: fit-content; margin-bottom: 0.75rem;">Domain Focus</span>
+    <h3 style="font-size: 1.3rem; color: var(--color-primary-navy); margin-bottom: 0.5rem;">Web Development</h3>
+    <p class="text-muted" style="font-size: 0.925rem; margin-bottom: 1.5rem; flex: 1;">
+      Targeted evaluation of HTML5 semantics, modern CSS layout, JavaScript DOM interactions, and Python REST API backends.
+    </p>
+
+    <div style="font-size: 0.825rem; color: var(--color-slate-muted); margin-bottom: 1.25rem;">
+      &bull; <strong>{{ category_counts.get('Web Development', 9) }} Questions</strong> &bull; Frontend & Backend
+    </div>
+
+    <form action="{{ url_for('assessment.start') }}" method="POST">
+      <input type="hidden" name="assessment_type" value="Web Development">
+      <button type="submit" class="btn btn-outline-navy" style="width: 100%;">
+        Start Web Dev Assessment
+      </button>
+    </form>
+  </div>
+
+  <!-- Option 3: Core Computer Science -->
+  <div class="hub-card" style="border-top: 4px solid var(--color-success-green);">
+    <div class="hub-card-icon" style="background-color: #ECFDF5; color: var(--color-success-green);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+    </div>
+    <span class="badge badge-success" style="width: fit-content; margin-bottom: 0.75rem;">Core Fundamentals</span>
+    <h3 style="font-size: 1.3rem; color: var(--color-primary-navy); margin-bottom: 0.5rem;">Core Computer Science</h3>
+    <p class="text-muted" style="font-size: 0.925rem; margin-bottom: 1.5rem; flex: 1;">
+      Tests essential CSE placement topics: Data Structures, Algorithmic Complexity, Database Systems (SQL), OS, and Networks.
+    </p>
+
+    <div style="font-size: 0.825rem; color: var(--color-slate-muted); margin-bottom: 1.25rem;">
+      &bull; <strong>{{ category_counts.get('Core CS', 8) }} Questions</strong> &bull; Technical Rounds
+    </div>
+
+    <form action="{{ url_for('assessment.start') }}" method="POST">
+      <input type="hidden" name="assessment_type" value="Core CS">
+      <button type="submit" class="btn btn-outline-navy" style="width: 100%;">
+        Start Core CS Assessment
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Option 4: Target Job Role Assessments -->
+<div class="card" style="margin-top: 2rem;">
+  <div class="card-header">
+    <div>
+      <h3 style="font-size: 1.3rem; color: var(--color-primary-navy);">Target Role Specific Evaluations</h3>
+      <p class="text-muted" style="font-size: 0.875rem;">Evaluate your readiness directly against a specific campus recruitment profile.</p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 1rem;">
+    {% for role in roles %}
+      <div style="background: var(--color-cloud-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+        <div>
+          <div style="font-weight: 700; color: var(--color-primary-navy); font-size: 1.05rem;">{{ role.title }}</div>
+          <div style="font-size: 0.825rem; color: var(--color-slate-muted);">{{ role.category }} &bull; {{ role.requirements|length }} Benchmarked Skills</div>
+        </div>
+        <form action="{{ url_for('assessment.start') }}" method="POST" style="margin: 0;">
+          <input type="hidden" name="assessment_type" value="Role Targeted">
+          <input type="hidden" name="role_id" value="{{ role.id }}">
+          <button type="submit" class="btn btn-sm btn-primary">
+            Assess for Role &rarr;
+          </button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block title %}SkillBridge AI - Intelligent Campus Placement Readiness & Skill Gap Analysis{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Left Column: Content -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge badge-indigo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Intelligent Placement Readiness Platform
+          </span>
+        </div>
+
+        <h1 class="hero-title">
+          Your Skills. <br>
+          <span class="gradient-text">Our AI.</span> <br>
+          A Stronger Future.
+        </h1>
+
+        <p class="hero-desc">
+          SkillBridge AI bridges the critical gap between academic curriculum and campus recruitment expectations. Diagnose your strengths, uncover industry skill deficits, and receive intelligent, personalized learning roadmaps tailored to your target job roles.
+        </p>
+
+        <div class="hero-actions">
+          <a href="{{ url_for('auth.signup') if not session.get('user_id') else url_for('dashboard.index') }}" class="btn btn-primary btn-lg">
+            <span>Get Started</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href="#features" class="btn btn-outline-navy btn-lg">Learn More</a>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="hero-stat-item">
+            <h4>100%</h4>
+            <p>Relational Data Driven</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>10+</h4>
+            <p>Industry Job Roles</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>Dual Engine</h4>
+            <p>AI + Deterministic Logic</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Graphic Card -->
+      <div class="hero-visual-card">
+        <div class="hero-visual-header">
+          <div class="hero-visual-dots">
+            <div class="hero-visual-dot dot-red"></div>
+            <div class="hero-visual-dot dot-yellow"></div>
+            <div class="hero-visual-dot dot-green"></div>
+          </div>
+          <span class="badge badge-lavender">Diagnostic Engine Live</span>
+        </div>
+
+        <!-- Mini Analytics Visual -->
+        <div class="visual-metric-grid">
+          <div class="visual-metric-box">
+            <span>Placement Readiness</span>
+            <strong>86.4%</strong>
+          </div>
+          <div class="visual-metric-box">
+            <span>Target Role Benchmark</span>
+            <strong style="color: var(--color-electric-indigo);">Software Dev</strong>
+          </div>
+        </div>
+
+        <!-- Skill Progress Bars Simulation -->
+        <div style="margin-top: 1.25rem;">
+          <div class="visual-skill-bar">
+            <div class="visual-skill-info">
+              <span>Data Structures & Algorithms</span>
+              <span class="text-indigo">Level 4 / 5</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-indigo" style="width: 80%;"></div>
+            </div>
+          </div>
+
+          <div class="visual-skill-bar">
+            <div class="visual-skill-info">
+              <span>Full-Stack Web Development</span>
+              <span class="text-success">Level 4.5 / 5</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-green" style="width: 90%;"></div>
+            </div>
+          </div>
+
+          <div class="visual-skill-bar">
+            <div class="visual-skill-info">
+              <span>Database Systems (SQL)</span>
+              <span class="text-primary">Level 3.5 / 5</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill fill-navy" style="width: 70%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; padding: 1rem; background-color: #EEF2FF; border-radius: var(--radius-md); border: 1px dashed var(--color-electric-indigo); display: flex; align-items: center; gap: 0.85rem;">
+          <div style="background-color: var(--color-electric-indigo); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.875rem; color: var(--color-primary-navy);">AI Suggested Priority:</div>
+            <div style="font-size: 0.8rem; color: var(--color-slate-muted);">Optimize System Architecture & Graph Traversal for Final Placements</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Screen 1: Four Feature Highlights -->
+<section id="features" class="features-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-badge">
+        <span class="badge badge-indigo">Core Capabilities</span>
+      </div>
+      <h2 class="section-title">Designed for Campus Career Success</h2>
+      <p class="section-subtitle">
+        Four integrated pillars crafted to guide Computer Science students from academic coursework to verified corporate readiness.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1: Assess Your Skills -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <h3>Assess Your Skills</h3>
+        <p>
+          Take structured, server-scored evaluations covering Web Development, Core CS (DBMS, OS, CN), Data Structures, and Industry Aptitude without revealing answer keys prematurely.
+        </p>
+      </div>
+
+      <!-- Feature 2: Find Skill Gaps -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <h3>Find Skill Gaps</h3>
+        <p>
+          Instantly compare your measured proficiency against live hiring benchmarks for real roles such as Software Engineer, Frontend Developer, and Data Analyst with granular gap metrics.
+        </p>
+      </div>
+
+      <!-- Feature 3: Get AI Suggestions -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <h3>Get AI Suggestions</h3>
+        <p>
+          Receive prioritized learning milestones, recommended practice activities, and portfolio project suggestions generated by our AI recommendation engine with a reliable deterministic fallback.
+        </p>
+      </div>
+
+      <!-- Feature 4: Achieve Your Goals -->
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h3>Achieve Your Goals</h3>
+        <p>
+          Convert recommendations into interactive checklists. Track tasks from "Not Started" to "Completed", monitor longitudinal score trends, and approach campus placement drives with confidence.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about-section">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <span class="badge badge-lavender" style="margin-bottom: 0.75rem;">About The Platform</span>
+        <h2 style="font-size: 2.25rem; color: var(--color-primary-navy); margin-bottom: 1.25rem;">
+          Built for Academic Excellence & Real-World Placement Drives
+        </h2>
+        <p class="text-muted" style="margin-bottom: 1.25rem;">
+          SkillBridge AI was engineered to address one of the largest challenges facing graduating engineers: knowing exactly what companies require and having a structured pathway to satisfy those expectations.
+        </p>
+        <p class="text-muted">
+          Our mathematical gap formulation guarantees transparency:
+          <strong style="color: var(--color-primary-navy);">Gap = Max(0, Role Benchmark &minus; Measured Proficiency)</strong>. This eliminates guesswork and provides students and placement coordinators with actionable academic intelligence.
+        </p>
+
+        <ul class="about-highlights">
+          <li class="about-item">
+            <span class="about-check">&#10003;</span>
+            <div>
+              <strong>Relational Schema & Security:</strong> Every student attempt is strictly isolated, hashed with PBKDF2:SHA256, and managed through SQLAlchemy ORM.
+            </div>
+          </li>
+          <li class="about-item">
+            <span class="about-check">&#10003;</span>
+            <div>
+              <strong>Zero-Vendor Lock-in:</strong> Functions autonomously with offline deterministic recommendations or connects to external AI APIs seamlessly.
+            </div>
+          </li>
+          <li class="about-item">
+            <span class="about-check">&#10003;</span>
+            <div>
+              <strong>CSE Curriculum Alignment:</strong> Tailored specifically for 2nd, 3rd, and 4th year CSE students preparing for tech interviews.
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card" style="border: 2px solid var(--color-border); padding: 2.5rem; background: #FFFFFF;">
+        <h3 style="font-size: 1.4rem; color: var(--color-primary-navy); margin-bottom: 1.25rem;">
+          Placement Readiness Formula
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="padding: 1rem; background: var(--color-cloud-white); border-radius: var(--radius-md); border-left: 4px solid var(--color-electric-indigo);">
+            <div style="font-weight: 700; color: var(--color-primary-navy);">1. Diagnostic Assessment</div>
+            <div style="font-size: 0.9rem; color: var(--color-slate-muted);">Calculates objective proficiency across foundational tech domains.</div>
+          </div>
+          <div style="padding: 1rem; background: var(--color-cloud-white); border-radius: var(--radius-md); border-left: 4px solid var(--color-soft-lavender);">
+            <div style="font-weight: 700; color: var(--color-primary-navy);">2. Role Benchmark Delta</div>
+            <div style="font-size: 0.9rem; color: var(--color-slate-muted);">Subtracts student score from company tier requirements.</div>
+          </div>
+          <div style="padding: 1rem; background: var(--color-cloud-white); border-radius: var(--radius-md); border-left: 4px solid var(--color-success-green);">
+            <div style="font-weight: 700; color: var(--color-primary-navy);">3. AI Structured Roadmap</div>
+            <div style="font-size: 0.9rem; color: var(--color-slate-muted);">Transforms deficiencies into week-by-week learning deliverables.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info-card">
+        <h3>Connect with Placement Cell</h3>
+        <p>Have inquiries regarding curriculum coverage, placement benchmarks, or administrator provisioning? Send a message to our department coordinators.</p>
+        
+        <div class="contact-detail-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span>placement-cell@cse.college.edu</span>
+        </div>
+
+        <div class="contact-detail-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <span>Department of Computer Science & Engineering</span>
+        </div>
+
+        <div class="contact-detail-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Hours: Mon - Fri (9:00 AM - 5:00 PM IST)</span>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="card" style="box-shadow: var(--shadow-md);">
+        <h3 style="font-size: 1.5rem; color: var(--color-primary-navy); margin-bottom: 0.5rem;">Send an Academic Inquiry</h3>
+        <p class="text-muted" style="margin-bottom: 1.5rem; font-size: 0.95rem;">Fill out the form below and the placement advisory team will respond.</p>
+
+        <form action="{{ url_for('main.contact') }}" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="contact-name">Full Name</label>
+            <input type="text" id="contact-name" name="name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contact-email">Email Address</label>
+            <input type="email" id="contact-email" name="email" class="form-control" placeholder="e.g. student@college.edu" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contact-message">Message or Feedback</label>
+            <textarea id="contact-message" name="message" class="form-control" placeholder="Specify your placement queries, questions or role feedback..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <span>Send Message</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
