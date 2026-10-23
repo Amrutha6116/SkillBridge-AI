@@ -15,11 +15,8 @@ def create_app(config_class=Config):
     # Initialize extensions
     db.init_app(app)
 
-    # Create database tables
-    with app.app_context():
-        db.create_all()
-
-    # Register blueprints
+    # Import blueprints
+    # These imports also load the models used by the application.
     from routes.main import main_bp
     from routes.auth import auth_bp
     from routes.dashboard import dashboard_bp
@@ -29,6 +26,7 @@ def create_app(config_class=Config):
     from routes.history import history_bp
     from routes.profile import profile_bp
 
+    # Register blueprints
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
@@ -37,6 +35,10 @@ def create_app(config_class=Config):
     app.register_blueprint(improvement_bp)
     app.register_blueprint(history_bp)
     app.register_blueprint(profile_bp)
+
+    # Create database tables after models are imported
+    with app.app_context():
+        db.create_all()
 
     # Context processors for templates
     @app.context_processor
